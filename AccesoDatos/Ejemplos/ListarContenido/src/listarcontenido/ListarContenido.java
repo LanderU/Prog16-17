@@ -52,11 +52,22 @@ public class ListarContenido {
                 System.exit(0);
             }else {
                 
-                System.out.print("El directorio, "+carpeta+" contiene los siguientes archivos/directorios: ");
+                System.out.println("El directorio, "+carpeta+" contiene los siguientes archivos/directorios: ");
                     
                 for (int i = 0; i < archivos.length; i++) {
                     
-                    System.out.println(archivos[i]);
+                    File tmp = new File(archivos[i]);
+                                        
+                    if(tmp.isDirectory()){
+                    
+                      System.out.println("Es un directorio," +archivos[i]);
+
+                    }else{
+                    
+                        System.out.println("Es un archivo, "+archivos[i]);
+                        
+                    }//end if
+                    
                         
                 }//end for
             
