@@ -29,26 +29,33 @@ public class Flujos {
     public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
         //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
-        if(!ARCHIVO.exists()){
+        if(ARCHIVO.exists()){
+            if (ARCHIVO.isDirectory()){
             
-            System.out.println("El archivo no se puede abrir");
-            System.out.println("Salimos...");
-            Thread.sleep(2000);
-            System.exit(0);
-        
-        }else{
-        
-                FileReader lectura = new FileReader(ARCHIVO);
+                System.out.println("No es un archivo si no un directorio");
+                System.out.println("Salimos...");
+                Thread.sleep(2000);
+                System.exit(0);
+            
+            }else{
+            
+              FileReader lectura = new FileReader(ARCHIVO);
                 
                 int i;
                 
                 while ((i = lectura.read()) != -1){
                 
                     System.out.print((char) i);
-                }
+                }// end while
+            }// end if
+        }else {
+            
+            System.out.println("NOT FOUND");
+            System.out.println("Salimos...");
+            Thread.sleep(2000);
+            System.exit(0);
         
-        }//end if
-        
+        }// end if
         
     }//main
 
