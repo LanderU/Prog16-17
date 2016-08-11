@@ -32,7 +32,7 @@ public class Flujos {
         if(!ARCHIVO.exists()){
             
             System.out.println("El archivo no se puede abrir");
-            System.out.println("Salidmos...");
+            System.out.println("Salimos...");
             Thread.sleep(2000);
             System.exit(0);
         
