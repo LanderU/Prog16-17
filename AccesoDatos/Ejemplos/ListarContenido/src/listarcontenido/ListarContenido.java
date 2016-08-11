@@ -56,17 +56,7 @@ public class ListarContenido {
                     
                 for (int i = 0; i < archivos.length; i++) {
                     
-                    File tmp = new File(archivos[i]);
-                                        
-                    if(tmp.isDirectory()){
-                    
-                      System.out.println("Es un directorio," +archivos[i]);
-
-                    }else{
-                    
-                        System.out.println("Es un archivo, "+archivos[i]);
-                        
-                    }//end if
+                  System.out.println(archivos[i]);
                     
                         
                 }//end for
