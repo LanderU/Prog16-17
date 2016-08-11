@@ -23,14 +23,11 @@ public class Flujos {
      * @param args the command line arguments
      */
     
+   // Path del archivo.
     static final File ARCHIVO = new File("/home/lander/github/Prog16-17/AccesoDatos/Ejemplos/Flujos/nombres");
     
     public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        
-        // Path del archivo.
-        
-        
+        //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
         if(!ARCHIVO.exists()){
             
