@@ -47,6 +47,11 @@ public class Flujos {
                 
                     System.out.print((char) i);
                 }// end while
+                
+                // cerramos el flujo.
+                
+                lectura.close();
+                
             }// end if
         }else {
             
