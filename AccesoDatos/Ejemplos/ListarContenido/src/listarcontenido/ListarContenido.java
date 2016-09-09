@@ -23,7 +23,7 @@ public class main {
         
         if (!directorio.exists()){
             
-            System.out.println("La ruta indicada no existe, salimos...");
+            System.out.println("La ruta/fichero indicada no existe, salimos...");
             Thread.sleep(1000); 
             System.exit(0);
         }else{
