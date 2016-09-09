@@ -1,71 +1,69 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package listarcontenido;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
+ * 
+ * @author Lander
  *
- * @author lander
  */
-public class ListarContenido {
 
-    /**
-     * @param args the command line arguments
-     */
+public class main {
+
     public static void main(String[] args) throws IOException, InterruptedException {
+        // TODO Auto-generated method stub
         
-        /*
-            Realiza un programa que liste los ficheros de un directorio, El nombre del directorio se pedirá por consola.
-        
-        */
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Escriba la ruta a auditar: ");
         
-        String carpeta = "";
+        String ruta = br.readLine();
         
-        System.out.print("Escriba el ruta+nombre de la carpeta que desea listar: ");
-        carpeta = br.readLine();
-        
-        File directorio = new File(carpeta);
+        File directorio = new File (ruta);
         
         if (!directorio.exists()){
-        
-            System.out.println("El directorio, "+carpeta+ " no existe.");
-            System.out.println("Salimos...");
-            Thread.sleep(1000);
-            System.exit((0));
+            
+            System.out.println("La ruta indicada no existe, salimos...");
+            Thread.sleep(1000); 
+            System.exit(0);
         }else{
+            File [] contenido = directorio.listFiles();
             
-            String [] archivos = directorio.list();
-            
-            if (archivos.length == 0){
-                System.out.println("No hay ningún archivo en el directorio, "+ carpeta);
-                System.out.println("Salimos...");
-                Thread.sleep(1000);
-                System.exit(0);
-            }else {
-                
-                System.out.println("El directorio, "+carpeta+" contiene los siguientes archivos/directorios: ");
-                    
-                for (int i = 0; i < archivos.length; i++) {
-                    
-                  System.out.println(archivos[i]);
-                    
+            for (int i = 0; i < contenido.length; i++){
+                if(contenido[i].isDirectory()){
+                    System.out.println(contenido[i].toString()+" Es un directorio");
+                    if(contenido[i].canRead()){
+                        System.out.println("Además se puede leer");
                         
-                }//end for
+                        if (contenido[i].canWrite()){
+                            
+                            System.out.println("Y escribir");
+                        }// end if
+                        
+                    }// end if
+                
+                    System.out.println(contenido[i].getAbsolutePath()+" Es su ruta absoluta");
+                    System.out.println("El tamaño del archivo es: "+contenido[i].length());
+                }else{
+                    System.out.println(contenido[i].toString()+"Es un archivo");
+                    if(contenido[i].canRead()){
+                        System.out.println("Además se puede leer");
+                        
+                        if (contenido[i].canWrite()){
+                            
+                            System.out.println("Y escribir");
+                        }// end if
+                        
+                    }// end if
+                
+                    System.out.println(contenido[i].getAbsolutePath()+" Es su ruta absoluta");
+                    System.out.println("El tamaño del archivo es: "+contenido[i].length());
+                }
+                
+            }// end for
             
-            }//end if
+        }// end if
         
-        }//end if
-        
-        
-    }//main
+    }// main
 
-}//class
+}// class
