@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
-* @author Lander
-*/
+ * 
+ * @author Lander
+ *
+ */
 
 
 
@@ -43,10 +45,14 @@ public class main {
 		
 		File contenido = new File (carpeta);
 		
-		borrar(contenido);
-		
-		System.out.println("Todo borrado!!!");
-		
+		if (contenido.exists()){
+			borrar(contenido);
+			System.out.println("Todo borrado!!!");
+			
+		}else {
+			
+			System.out.println("Ruta erronea.");
+		}	
 
 	}// end main
 
