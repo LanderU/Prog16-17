@@ -148,6 +148,8 @@ public class main {
 							System.out.print((char) i);
 							
 						}// end while
+
+						lectura.close();
 						
 					}else {
 						
