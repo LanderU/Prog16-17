@@ -112,7 +112,7 @@ public class main {
 							try {
 								// Debug
 								//System.out.println("ruta"+ ruta + "nomFich"+ nomFich);
-								FileWriter fichEscribir = new FileWriter(ruta+"/"+nomFich);
+								FileWriter fichEscribir = new FileWriter(ruta+"/"+nomFich,true);
 								
 								fichEscribir.write(frase + "\n");
 								
