@@ -26,6 +26,8 @@ public class Buffers {
 			
 		}
 
+		lectura.close();
+
 	}// main
 
 }// class
