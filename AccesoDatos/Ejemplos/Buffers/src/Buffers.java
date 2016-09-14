@@ -10,9 +10,7 @@ public class Buffers {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		
-		File fichero = new File("/home/lander/prueba");
-		
-		FileReader lectura = new FileReader(fichero);
+		FileReader lectura = new FileReader(new File("/home/lander/prueba"));
 		
 		char [] carLeidos = new char [TAMANO_BUFFER];
 		
@@ -25,7 +23,7 @@ public class Buffers {
 			System.out.print(caracter);
 			
 		}
-
+		
 		lectura.close();
 
 	}// main
