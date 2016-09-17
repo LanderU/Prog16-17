@@ -17,8 +17,7 @@ public class Binarios {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		
-		File ficBinario = new File ("archivo");
-		FileOutputStream data = new FileOutputStream(ficBinario);
+		FileOutputStream data = new FileOutputStream(new File ("archivo"));
 		DataOutputStream escritura = new DataOutputStream(data);
 		
 		String [] nombres = {"Ana","Luis Miguel","Alicia","Pedro","Manuel"
