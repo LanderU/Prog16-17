@@ -1,4 +1,6 @@
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,8 +33,23 @@ public class Binarios {
 			
 		}// end for
 		
-		escritura.close();
-
+		escritura.close();	
+		// Leer los datos.
+		
+		FileInputStream datosFichero = new FileInputStream (new File ("archivo"));
+		DataInputStream datos = new DataInputStream(datosFichero);
+		
+		try {
+			while (true){
+				
+				System.out.println("Nombre: "+datos.readUTF() + ", edad: "+datos.readInt());
+				
+			}// end while
+		}catch (EOFException eo){
+		}finally{	
+			System.out.println("Cerramos el flujo.");
+			datos.close();
+		}
 	}// main
 
 }//class
