@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -57,20 +58,26 @@ public class AccesoAleatorio {
 		char aux;
 		// Ponemos la posición a 0
 		fichero.seek(pos);
+		try{
+			while (fichero.getFilePointer() < fichero.length()){
+				fichero.seek(pos);
+				id = fichero.readInt();
+				for (int i = 0; i < empleados.length; i++) {
+					aux = fichero.readChar();
+					name [i] = aux;
+				}// end for
+				String nombre = new String (name);
+				System.out.println("Número de persona: "+id+", nombre de la persona: "+nombre);
+				pos = pos + tamano;
+			}// end while
+		}catch(EOFException e){
+			
+		}finally{
+			
+			fichero.close();
+
+		}
 		
-		while (fichero.getFilePointer() < fichero.length()){
-			fichero.seek(pos);
-			id = fichero.readInt();
-			for (int i = 0; i < empleados.length; i++) {
-				aux = fichero.readChar();
-				name [i] = aux;
-			}// end for
-			String nombre = new String (name);
-			System.out.println("Número de persona: "+id+", nombre de la persona: "+nombre);
-			pos = pos + tamano;
-		}// end while
-		
-		fichero.close();
 		
 		
 	}// main
