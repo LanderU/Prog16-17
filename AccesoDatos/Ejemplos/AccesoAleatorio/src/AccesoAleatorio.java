@@ -47,6 +47,7 @@ public class AccesoAleatorio {
 			fichero.writeInt(i+1);
 			bufferEmpleados = new StringBuffer(empleados[i]);
 			bufferEmpleados.setLength(mayorNombre);
+			System.out.println("El buffer: "+bufferEmpleados.toString());
 			fichero.writeChars(bufferEmpleados.toString());
 		}// end for
 				
@@ -58,11 +59,11 @@ public class AccesoAleatorio {
 		char aux;
 		// Ponemos la posición a 0
 		fichero.seek(pos);
-		try{
-			while (fichero.getFilePointer() < fichero.length()){
+		
+		while (fichero.getFilePointer() < fichero.length()){
 				fichero.seek(pos);
 				id = fichero.readInt();
-				for (int i = 0; i < empleados.length; i++) {
+				for (int i = 0; i < mayorNombre; i++) {
 					aux = fichero.readChar();
 					name [i] = aux;
 				}// end for
@@ -70,13 +71,8 @@ public class AccesoAleatorio {
 				System.out.println("Número de persona: "+id+", nombre de la persona: "+nombre);
 				pos = pos + tamano;
 			}// end while
-		}catch(EOFException e){
-			
-		}finally{
 			
 			fichero.close();
-
-		}
 		
 		
 		
