@@ -47,7 +47,6 @@ public class AccesoAleatorio {
 			fichero.writeInt(i+1);
 			bufferEmpleados = new StringBuffer(empleados[i]);
 			bufferEmpleados.setLength(mayorNombre);
-			System.out.println("El buffer: "+bufferEmpleados.toString());
 			fichero.writeChars(bufferEmpleados.toString());
 		}// end for
 				
@@ -69,7 +68,7 @@ public class AccesoAleatorio {
 				}// end for
 				String nombre = new String (name);
 				System.out.println("Número de persona: "+id+", nombre de la persona: "+nombre);
-				pos = pos + tamano;
+				pos += tamano;
 			}// end while
 			
 			fichero.close();
