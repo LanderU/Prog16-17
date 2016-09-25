@@ -51,10 +51,11 @@ public class CopiarDatos {
 		
 		try {
 			
-			String aux = "";
-			
 			while (true){
-				fichEscribir.write(lectura.readUTF()+" "+aux.valueOf(lectura.readInt()));
+					
+				fichEscribir.write(lectura.readUTF()+" "+String.valueOf(lectura.readInt())+" ");
+					
+
 			}// end while
 		}catch (EOFException eo){
 		}finally{	
@@ -62,9 +63,6 @@ public class CopiarDatos {
 			lectura.close();
 			fichEscribir.close();
 		}
-		
-
-
 
 	}// main
 
