@@ -67,8 +67,9 @@ public class AccesoAleatorio {
 					name [i] = aux;
 				}// end for
 				String nombre = new String (name);
+				Double sueldo = fichero.readDouble();
 				System.out.println("Número de persona: "+id+", nombre de la persona: "+nombre);
-				pos += tamano;
+				pos = pos + tamano;
 			}// end while
 			
 			fichero.close();
