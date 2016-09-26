@@ -11,6 +11,7 @@ public class Hilo5 {
 		Thread hPong = new Thread(new Hilo2("pong"));
 		
 		hPing.start();
+		Thread.sleep(100);
 		hPong.start();
 		
 
