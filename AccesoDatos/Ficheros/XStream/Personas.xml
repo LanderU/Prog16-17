@@ -1,0 +1,14 @@
+<ListaPersonas>
+  <DatosPersona>
+    <nombre>Lander</nombre>
+    <edad>28</edad>
+  </DatosPersona>
+  <DatosPersona>
+    <nombre>Marcos</nombre>
+    <edad>34</edad>
+  </DatosPersona>
+  <DatosPersona>
+    <nombre>Alberto</nombre>
+    <edad>30</edad>
+  </DatosPersona>
+</ListaPersonas>
