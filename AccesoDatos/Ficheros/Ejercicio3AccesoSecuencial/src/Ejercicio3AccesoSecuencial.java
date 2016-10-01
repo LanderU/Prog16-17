@@ -61,7 +61,7 @@ public class Ejercicio3AccesoSecuencial {
 			}// end if
 		}// end for
 		
-		// Referencia al para el Buffer
+		// Referencia para el Buffer
 		StringBuffer bufferEmpleados = null;
 			// Guardamos los datos
 			for (int i = 0; i < empleados.length; i++){
@@ -83,8 +83,6 @@ public class Ejercicio3AccesoSecuencial {
 		
 		return total;
 
-		
-		
 	}// end CrearFichero
 	
 	
@@ -99,7 +97,7 @@ public class Ejercicio3AccesoSecuencial {
 		}// end for
 		
 		return mayorNombre;
-	}//
+	}//end TotalNombre
 	
 	public static void MostrarEmpleado(int numEmpleado, String [] empleados) throws IOException, InterruptedException{
 		
@@ -107,7 +105,7 @@ public class Ejercicio3AccesoSecuencial {
 		
 		int posicion = (numEmpleado -1)* TotalBuffer(empleados);
 		
-		if (posicion > fichero.length() || posicion <= 0){
+		if (posicion > fichero.length() || posicion < 0){
 			
 			System.out.println("Ese registro no existe");
 			fichero.close();
@@ -183,7 +181,7 @@ public class Ejercicio3AccesoSecuencial {
 			try {
 				opcion = Integer.parseInt(leerTerminal.readLine());
 				if (opcion < 1 || opcion > 4){
-					System.out.println("Rcuerde que tiene que introducir un número entro el 1 y el 4");
+					System.out.println("Recuerde que tiene que introducir un número entre el 1 y el 4");
 					Thread.sleep(1000);
 				}// end if
 				
@@ -191,15 +189,12 @@ public class Ejercicio3AccesoSecuencial {
 				Acciones(opcion, empleados);
 				
 			} catch (NumberFormatException e) {
-				System.out.println("Rcuerde que tiene que introducir un número entro el 1 y el 4");
+				System.out.println("Recuerde que tiene que introducir un número entre el 1 y el 4");
 				opcion = 0;
 				Thread.sleep(1000);
 			}// end try
 				
 		} while (opcion != 4);
-		
-		
-		
 		
 	}// main
 
