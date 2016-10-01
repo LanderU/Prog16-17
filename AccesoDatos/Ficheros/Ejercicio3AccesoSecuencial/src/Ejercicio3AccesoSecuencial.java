@@ -1,15 +1,20 @@
+import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 
 /**
  * 
- * @author root
+ * @author Lander
  *
  */ 
  
 public class Ejercicio3AccesoSecuencial {
+	
+	static BufferedReader leerTerminal = new BufferedReader(new InputStreamReader(System.in));
+
 	
 	/*
 	 * Funciones
@@ -75,29 +80,47 @@ public class Ejercicio3AccesoSecuencial {
 		long total = fichero.length();
 		
 		fichero.close();
+		
+		return total;
 
-		return total;					
 		
 		
 	}// end CrearFichero
 	
-	public static void MostrarEmpleado(int numEmpleado, String [] empleados) throws IOException{
+	
+	public static int TotalNombre(String [] empleados){
+		
+		int mayorNombre = Integer.MIN_VALUE;
+		
+		for (int i = 0; i < empleados.length; i++) {
+			if (empleados[i].length() > mayorNombre){
+				mayorNombre = empleados[i].length();
+			}// end if
+		}// end for
+		
+		return mayorNombre;
+	}//
+	
+	public static void MostrarEmpleado(int numEmpleado, String [] empleados) throws IOException, InterruptedException{
 		
 		RandomAccessFile fichero = new RandomAccessFile(new File ("prueba"), "r");
 		
 		int posicion = (numEmpleado -1)* TotalBuffer(empleados);
 		
-		if (posicion > fichero.length()){
+		if (posicion > fichero.length() || posicion <= 0){
 			
 			System.out.println("Ese registro no existe");
 			fichero.close();
+			Thread.sleep(1000);
 			
 		}else{
 			fichero.seek(posicion);
 			char [] nom = new char [TotalBuffer(empleados) - 12];
 			char aux;
+			System.out.println("Estos son los datos: \n"
+					+ "################################");
 			int id = fichero.readInt();
-			for (int i = 0; i < TotalBuffer(empleados) - 12; i++) {
+			for (int i = 0; i < TotalNombre(empleados); i++) {
 				aux = fichero.readChar();
 				nom [i] = aux;
 			}// end for 
@@ -107,30 +130,75 @@ public class Ejercicio3AccesoSecuencial {
 			System.out.println("El nombre: "+nombre);
 			System.out.println("Salario: "+sueldo);
 			fichero.close();
+			Thread.sleep(1000);
 		}	
 		
 	}// end MostrarEmpleado
+	
+	public static void Acciones(int opcion, String [] empleados) throws IOException, InterruptedException{
+		
+		switch (opcion) {
+		case 1:
+				System.out.print("Escriba el número de empleado a buscar: ");
+				try{
+					int numEmple = Integer.parseInt(leerTerminal.readLine());
+					
+					MostrarEmpleado(numEmple, empleados);
+					
+				}catch (NumberFormatException ex){
+					System.out.println("Introduzca un número.");
+					System.out.println("Salimos al menú.");
+					Thread.sleep(1000);
+				}// end catch
+			
+			break;
+
+		default:
+			break;
+		}// end sw	
+		
+	}// end Acción
 	
 	
 	/*
 	 * End funciones
 	 */
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
+		
 		
 		// Datos
 		String [] empleados = {"Lander", "Alberto","Ion", "Marcos"};
 		Double [] sueldos = {1200.0, 900.0, 1000.0, 3000.0};
 		
-		//int opcion = 0;
+		// Creamos el fichero
+		CrearFichero(empleados, sueldos);
 		
-		//do {
-		//	Menu();
+		int opcion = 0;
+		
+		do {
 			
-		//} while (opcion != 4);
-		long total = CrearFichero(empleados, sueldos);
+			Menu();
+			
+			try {
+				opcion = Integer.parseInt(leerTerminal.readLine());
+				if (opcion < 1 || opcion > 4){
+					System.out.println("Rcuerde que tiene que introducir un número entro el 1 y el 4");
+					Thread.sleep(1000);
+				}// end if
+				
+				// Función
+				Acciones(opcion, empleados);
+				
+			} catch (NumberFormatException e) {
+				System.out.println("Rcuerde que tiene que introducir un número entro el 1 y el 4");
+				opcion = 0;
+				Thread.sleep(1000);
+			}// end try
+				
+		} while (opcion != 4);
 		
-		MostrarEmpleado(1,empleados);
+		
 		
 		
 	}// main
