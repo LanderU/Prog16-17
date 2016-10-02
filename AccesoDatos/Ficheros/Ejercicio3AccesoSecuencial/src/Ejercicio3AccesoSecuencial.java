@@ -15,6 +15,7 @@ import java.io.RandomAccessFile;
 public class Ejercicio3AccesoSecuencial {
 	
 	static BufferedReader leerTerminal = new BufferedReader(new InputStreamReader(System.in));
+	static RandomAccessFile fichero;
 
 	
 	/*
@@ -50,7 +51,7 @@ public class Ejercicio3AccesoSecuencial {
 	
 	public static long CrearFichero(String [] empleados, Double [] sueldos) throws IOException{
 		
-		RandomAccessFile fichero = new RandomAccessFile(new File ("prueba"), "rw");
+		fichero = new RandomAccessFile(new File ("prueba"), "rw");
 
 				
 		int mayorNombre = Integer.MIN_VALUE;
@@ -103,7 +104,7 @@ public class Ejercicio3AccesoSecuencial {
 	
 	public static void MostrarEmpleado(int numEmpleado, String [] empleados) throws IOException, InterruptedException{
 		
-		RandomAccessFile fichero = new RandomAccessFile(new File ("prueba"), "r");
+		fichero = new RandomAccessFile(new File ("prueba"), "r");
 		
 		int posicion = (numEmpleado -1)* TotalBuffer(empleados);
 		
@@ -137,11 +138,11 @@ public class Ejercicio3AccesoSecuencial {
 	
 	public static void ModificarSalario(int numEmpleado, String [] empleados) throws IOException, InterruptedException{
 		
-		RandomAccessFile fichero = new RandomAccessFile(new File ("prueba"), "rw");
+		fichero = new RandomAccessFile(new File ("prueba"), "rw");
 		
 		//Posicionamos el puntero en el sueldo, primero nos ponemos en la primera posición del registro y luego le sumamos el total el int 4 y el total calculado del nombre.
 		
-		int posicion = (numEmpleado -1)* TotalBuffer(empleados) + 4 + (TotalNombre(empleados) *2);
+		long posicion = (numEmpleado -1)* TotalBuffer(empleados) + 4 + (TotalNombre(empleados) *2);
 		
 		if (posicion > fichero.length() || posicion < 0){
 			
@@ -157,6 +158,8 @@ public class Ejercicio3AccesoSecuencial {
 			System.out.print("Nuevo salario: ");
 			try {
 				nuevoSueldo = Double.parseDouble(leerTerminal.readLine());
+				// Nos volvemos a posicionar
+				fichero.seek(posicion);
 				fichero.writeDouble(nuevoSueldo);
 				System.out.println("Sueldo actualizado!!");
 				Thread.sleep(1000);
