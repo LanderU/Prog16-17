@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
@@ -24,8 +25,7 @@ public class Ejercicio3AccesoSecuencial {
 		System.out.println("Seleccione una opción de la lista \n \n"
 				+ "1- Buscar Empleado \n"
 				+ "2- Modificar salario \n"
-				+ "3- Borrar Empleado \n"
-				+ "4- Salir \n");
+				+ "3- Salir \n");
 		System.out.print("Opcion: ");
 		
 	}// end menú
@@ -83,6 +83,8 @@ public class Ejercicio3AccesoSecuencial {
 		
 		return total;
 
+		
+		
 	}// end CrearFichero
 	
 	
@@ -97,7 +99,7 @@ public class Ejercicio3AccesoSecuencial {
 		}// end for
 		
 		return mayorNombre;
-	}//end TotalNombre
+	}//
 	
 	public static void MostrarEmpleado(int numEmpleado, String [] empleados) throws IOException, InterruptedException{
 		
@@ -133,13 +135,53 @@ public class Ejercicio3AccesoSecuencial {
 		
 	}// end MostrarEmpleado
 	
+	public static void ModificarSalario(int numEmpleado, String [] empleados) throws IOException, InterruptedException{
+		
+		RandomAccessFile fichero = new RandomAccessFile(new File ("prueba"), "rw");
+		
+		//Posicionamos el puntero en el sueldo, primero nos ponemos en la primera posición del registro y luego le sumamos el total el int 4 y el total calculado del nombre.
+		
+		int posicion = (numEmpleado -1)* TotalBuffer(empleados) + 4 + (TotalNombre(empleados) *2);
+		
+		if (posicion > fichero.length() || posicion < 0){
+			
+			System.out.println("Ese registro no existe");
+			fichero.close();
+			Thread.sleep(1000);
+			
+		}else{
+			fichero.seek(posicion);
+			Double sueldo = fichero.readDouble();
+			Double nuevoSueldo;
+			System.out.print("El salario actual del empleado es: "+sueldo+"\n");
+			System.out.print("Nuevo salario: ");
+			try {
+				nuevoSueldo = Double.parseDouble(leerTerminal.readLine());
+				fichero.writeDouble(nuevoSueldo);
+				System.out.println("Sueldo actualizado!!");
+				Thread.sleep(1000);
+				
+			} catch (NumberFormatException  e) {
+				System.out.println("Introduzca un sueldo válido, ejemplo: 1000");
+				System.out.println("Salimos al menú.");
+				Thread.sleep(1000);
+			}
+			fichero.close();
+			Thread.sleep(1000);
+		}	
+		
+		
+	}// end ModificarSalario
+	
 	public static void Acciones(int opcion, String [] empleados) throws IOException, InterruptedException{
+		
+		int numEmple;
 		
 		switch (opcion) {
 		case 1:
 				System.out.print("Escriba el número de empleado a buscar: ");
 				try{
-					int numEmple = Integer.parseInt(leerTerminal.readLine());
+					numEmple = Integer.parseInt(leerTerminal.readLine());
 					
 					MostrarEmpleado(numEmple, empleados);
 					
@@ -150,8 +192,26 @@ public class Ejercicio3AccesoSecuencial {
 				}// end catch
 			
 			break;
-
-		default:
+		case 2:
+			
+			System.out.print("Escriba el número de empleado a buscar: ");
+			try{
+				numEmple = Integer.parseInt(leerTerminal.readLine());
+				
+				ModificarSalario(numEmple,empleados);
+				
+			}catch (NumberFormatException ex){
+				System.out.println("Introduzca un número.");
+				System.out.println("Salimos al menú.");
+				Thread.sleep(1000);
+			}// end catch
+					
+			break;
+		case 3:
+			
+			System.out.println("Gracias por usar nuestra aplicación.");
+			Thread.sleep(1000);
+			
 			break;
 		}// end sw	
 		
@@ -171,7 +231,7 @@ public class Ejercicio3AccesoSecuencial {
 		
 		// Creamos el fichero
 		CrearFichero(empleados, sueldos);
-		
+
 		int opcion = 0;
 		
 		do {
@@ -181,7 +241,7 @@ public class Ejercicio3AccesoSecuencial {
 			try {
 				opcion = Integer.parseInt(leerTerminal.readLine());
 				if (opcion < 1 || opcion > 4){
-					System.out.println("Recuerde que tiene que introducir un número entre el 1 y el 4");
+					System.out.println("Rcuerde que tiene que introducir un número entro el 1 y el 4");
 					Thread.sleep(1000);
 				}// end if
 				
@@ -189,12 +249,12 @@ public class Ejercicio3AccesoSecuencial {
 				Acciones(opcion, empleados);
 				
 			} catch (NumberFormatException e) {
-				System.out.println("Recuerde que tiene que introducir un número entre el 1 y el 4");
+				System.out.println("Rcuerde que tiene que introducir un número entro el 1 y el 4");
 				opcion = 0;
 				Thread.sleep(1000);
 			}// end try
 				
-		} while (opcion != 4);
+		} while (opcion != 3);
 		
 	}// main
 
