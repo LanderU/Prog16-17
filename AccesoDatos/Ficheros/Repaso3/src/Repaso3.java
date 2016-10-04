@@ -69,9 +69,13 @@ public class Repaso3 {
 			}
 			
 		}
-/* test		
-		ObjectInputStream otro = new ObjectInputStream(new FileInputStream("datosCoche"));
+		Coche c2 = new Coche("kk1",3.0,"fdsfds");
+		ObjectOutputStream anadir = new AppendObject(new FileOutputStream ("datosCoches",true));
+		anadir.writeObject(c2);
 		
+	
+		ObjectInputStream otro = new ObjectInputStream(new FileInputStream("datosCoches"));
+/*		
 		try {
 			while (true){
 				
