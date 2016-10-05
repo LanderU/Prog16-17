@@ -1,0 +1,20 @@
+<ListadoReinos>
+  <Reinos>
+    <numReino>1</numReino>
+    <nombre>Stark</nombre>
+    <emblema>Lobo Huargo</emblema>
+    <lema>El invierno se acerca</lema>
+  </Reinos>
+  <Reinos>
+    <numReino>3</numReino>
+    <nombre>Baratheon</nombre>
+    <emblema>Ciervo</emblema>
+    <lema>Nuestra es la furia</lema>
+  </Reinos>
+  <Reinos>
+    <numReino>4</numReino>
+    <nombre>Targaryen</nombre>
+    <emblema>Dragón</emblema>
+    <lema>Fuego y Sangre</lema>
+  </Reinos>
+</ListadoReinos>
