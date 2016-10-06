@@ -9,22 +9,24 @@ public class Semaforos2 {
 
 	public static void main(String[] args) {
 		
-		int numJugadores = 0;
+		//int numJugadores = 0;
+		//Caja c = new Caja();
 		
-		try {
+		//try {
 			
-			numJugadores = Integer.parseInt(JOptionPane.showInputDialog("Número de niños"));
+			//numJugadores = Integer.parseInt(JOptionPane.showInputDialog("Número de niños"));
 			
-		} catch (NumberFormatException e) {
+		//} catch (NumberFormatException e) {
 			// TODO: handle exception
-			JOptionPane.showMessageDialog(null,"No es un número");
-		}
+		//	JOptionPane.showMessageDialog(null,"No es un número");
+		//}
 		
-		Hilo [] ninos = new Hilo [numJugadores];
+		Hilo [] ninos = new Hilo [4];
 		
-		for (int i = 0; i < ninos.length; i++) {
-			
-			String nombre = JOptionPane.showInputDialog("Nombre del "+(i+1)+" niño");
+		String [] nombres = {"Fermin", "Eider","Alberto","Lander"};
+		
+		for (int i = 0; i < nombres.length; i++) {
+
 			
 			int nCromos = 0;
 			try {
@@ -33,12 +35,14 @@ public class Semaforos2 {
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null,"No es un número");
 			}
-			
 			ninos[i] = new Hilo(nCromos);
-			ninos[i].setName(nombre);
-			ninos[i].start();
+			ninos[i].setName(nombres[i]);
 			
 		}// end for
+		
+		for (int i = 0; i < nombres.length; i++) {
+			ninos[i].start();
+		}
 		
 	}// main
 

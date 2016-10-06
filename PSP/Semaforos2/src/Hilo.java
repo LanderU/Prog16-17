@@ -1,25 +1,49 @@
+import javax.swing.JOptionPane;
+
 /**
  * 
  * @author Lander
  *
  */
-public class Hilo extends Thread{
-	
-	private int n;
-	
-	Caja c = new Caja();
-	
-	public Hilo(int cantidad){
+public class Semaforos2 {
+
+	public static void main(String[] args) {
 		
-		this.n= cantidad;
+		//int numJugadores = 0;
+		//Caja c = new Caja();
 		
-	}// end constructor
-	
-	@Override
-	public void run(){
+		//try {
+			
+			//numJugadores = Integer.parseInt(JOptionPane.showInputDialog("Número de niños"));
+			
+		//} catch (NumberFormatException e) {
+			// TODO: handle exception
+		//	JOptionPane.showMessageDialog(null,"No es un número");
+		//}
 		
-		c.Restar(n);
+		Hilo [] ninos = new Hilo [4];
 		
-	}// end run
+		String [] nombres = {"Fermin", "Eider","Alberto","Lander"};
+		
+		for (int i = 0; i < nombres.length; i++) {
+
+			
+			int nCromos = 0;
+			try {
+				nCromos = Integer.parseInt(JOptionPane.showInputDialog("Número de cromos"));
+				
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null,"No es un número");
+			}
+			ninos[i] = new Hilo(nCromos);
+			ninos[i].setName(nombres[i]);
+			
+		}// end for
+		
+		for (int i = 0; i < nombres.length; i++) {
+			ninos[i].start();
+		}
+		
+	}// main
 
 }// class
