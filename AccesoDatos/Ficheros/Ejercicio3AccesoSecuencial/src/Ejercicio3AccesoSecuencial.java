@@ -26,7 +26,7 @@ public class Ejercicio3AccesoSecuencial {
 		System.out.println("Seleccione una opción de la lista \n \n"
 				+ "1- Buscar Empleado \n"
 				+ "2- Modificar salario \n"
-				+ "3- Borrar empleadon \n"
+				+ "3- Borrar empleado \n"
 				+ "4- Salir \n");
 		System.out.print("Opcion: ");
 		
