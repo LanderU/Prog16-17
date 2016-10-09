@@ -26,7 +26,8 @@ public class Ejercicio3AccesoSecuencial {
 		System.out.println("Seleccione una opción de la lista \n \n"
 				+ "1- Buscar Empleado \n"
 				+ "2- Modificar salario \n"
-				+ "3- Salir \n");
+				+ "3- Borrar empleadon \n"
+				+ "4- Salir \n");
 		System.out.print("Opcion: ");
 		
 	}// end menú
@@ -176,6 +177,30 @@ public class Ejercicio3AccesoSecuencial {
 		
 	}// end ModificarSalario
 	
+	public static void BorrarEmpleado(int numEmpleado, String [] empleados) throws IOException, InterruptedException{
+		// Stream
+		fichero = new RandomAccessFile(new File ("prueba"), "rw");
+		
+		long posicion = (numEmpleado -1)* TotalBuffer(empleados);
+		
+		if (posicion > fichero.length() || posicion < 0){
+
+			System.out.println("Ese registro no existe");
+			fichero.close();
+			Thread.sleep(1000);
+			
+		}else{
+			fichero.seek(posicion);
+			//System.out.println(fichero.readInt());
+			fichero.writeInt(0);
+			fichero.close();
+			System.out.println("Empleado borrado!");
+			Thread.sleep(1000);
+		}// end if
+
+		
+	}// end BorrarEmpleado
+	
 	public static void Acciones(int opcion, String [] empleados) throws IOException, InterruptedException{
 		
 		int numEmple;
@@ -210,10 +235,26 @@ public class Ejercicio3AccesoSecuencial {
 			}// end catch
 					
 			break;
-		case 3:
+		case 3: 
+			
+			System.out.print("Escriba el número de empleado a borrar: ");
+			try{
+				numEmple = Integer.parseInt(leerTerminal.readLine());
+				
+				BorrarEmpleado(numEmple,empleados);
+				
+			}catch (NumberFormatException ex){
+				System.out.println("Introduzca un número.");
+				System.out.println("Salimos al menú.");
+				Thread.sleep(1000);
+			}// end catch
+			
+			break;
+		case 4:
 			
 			System.out.println("Gracias por usar nuestra aplicación.");
 			Thread.sleep(1000);
+			System.exit(0);
 			
 			break;
 		}// end sw	
