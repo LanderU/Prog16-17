@@ -298,7 +298,7 @@ public class Ejercicio3AccesoSecuencial {
 				Thread.sleep(1000);
 			}// end try
 				
-		} while (opcion != 3);
+		} while (opcion != 4);
 		
 	}// main
 
