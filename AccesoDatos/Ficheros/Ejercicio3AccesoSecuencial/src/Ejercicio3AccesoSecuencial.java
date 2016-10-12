@@ -117,22 +117,27 @@ public class Ejercicio3AccesoSecuencial {
 			
 		}else{
 			fichero.seek(posicion);
-			char [] nom = new char [TotalBuffer(empleados) - 12];
-			char aux;
-			System.out.println("Estos son los datos: \n"
-					+ "################################");
-			int id = fichero.readInt();
-			for (int i = 0; i < TotalNombre(empleados); i++) {
-				aux = fichero.readChar();
-				nom [i] = aux;
-			}// end for 
-			String nombre = new String (nom);
-			Double sueldo = fichero.readDouble();
-			System.out.println("El identificador: "+id);
-			System.out.println("El nombre: "+nombre);
-			System.out.println("Salario: "+sueldo);
-			fichero.close();
-			Thread.sleep(1000);
+			if (fichero.readInt() == 0){
+				System.out.println("Ese registro ha sido borrado.");
+			}else{
+				fichero.seek(posicion);
+				char [] nom = new char [TotalBuffer(empleados) - 12];
+				char aux;
+				System.out.println("Estos son los datos: \n"
+						+ "################################");
+				int id = fichero.readInt();
+				for (int i = 0; i < TotalNombre(empleados); i++) {
+					aux = fichero.readChar();
+					nom [i] = aux;
+				}// end for 
+				String nombre = new String (nom);
+				Double sueldo = fichero.readDouble();
+				System.out.println("El identificador: "+id);
+				System.out.println("El nombre: "+nombre);
+				System.out.println("Salario: "+sueldo);
+				fichero.close();
+				Thread.sleep(1000);
+			}// end if
 		}	
 		
 	}// end MostrarEmpleado
