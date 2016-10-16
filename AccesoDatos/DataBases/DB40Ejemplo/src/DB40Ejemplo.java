@@ -1,8 +1,11 @@
+import java.util.Arrays;
+
 import javax.swing.JOptionPane;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import com.db4o.ext.DatabaseClosedException;
 
 /**
  * 
@@ -46,7 +49,7 @@ public class DB40Ejemplo {
 		manejadorDB.store(emp6);
 		
 		//Cerramos la conexión
-		manejadorDB.close();
+		//manejadorDB.close();
 		
 		JOptionPane.showMessageDialog(null, "Datos guardados!!");
 		
@@ -54,26 +57,42 @@ public class DB40Ejemplo {
 		try {
 			
 			Integer dep = Integer.parseInt(JOptionPane.showInputDialog("Número del departamento"));
+			try {
+				
+			} catch (DatabaseClosedException e) {
+				System.out.println(e.toString());
+				// TODO: handle exception
+			}
 			Departamento buscar = new Departamento(dep,null);
 			Empleado buscEmpleado = new Empleado(null,null,dep);
 			
 			ObjectSet<Departamento> resultado = manejadorDB.queryByExample(buscar);
-			ObjectSet<Empleado> resEmple = manejadorDB.queryByExample(buscar);
+			ObjectSet<Empleado> resEmple = manejadorDB.queryByExample(buscEmpleado);
 			
 			if((resultado.size() == 0) || (resEmple.size() == 0)){
 				JOptionPane.showMessageDialog(null, "No hay datos");
 			}else{
-				String [] nombres = new String[resultado.size()];
+				String [] nombres = new String[resEmple.size()];
 				int i = 0;
-				while (resultado.hasNext()){
-					
+				while (resEmple.hasNext()){
+					Empleado aux = resEmple.next();
+					nombres[i] = aux.getNomEmpleado();
+					i++;
 				}// end while
-				
+				// Ordenamos los empleados
+				Arrays.sort(nombres);
+				Departamento depAux = resultado.next();
+				System.out.println("Los empleados listados a continación pertenecen al departamento: "+depAux.getNombre());
+				for (int j = 0; j < nombres.length; j++) {
+					System.out.println("Empleado: "+nombres[i]);
+				}// End for	
 			}// end if
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			JOptionPane.showMessageDialog(null, "No es un número váido");
-		}// end try
+		}finally{
+			manejadorDB.close();
+		}
 		
 	}//main
 
