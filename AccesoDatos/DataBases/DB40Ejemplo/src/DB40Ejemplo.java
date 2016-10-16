@@ -57,12 +57,6 @@ public class DB40Ejemplo {
 		try {
 			
 			Integer dep = Integer.parseInt(JOptionPane.showInputDialog("Número del departamento"));
-			try {
-				
-			} catch (DatabaseClosedException e) {
-				System.out.println(e.toString());
-				// TODO: handle exception
-			}
 			Departamento buscar = new Departamento(dep,null);
 			Empleado buscEmpleado = new Empleado(null,null,dep);
 			
