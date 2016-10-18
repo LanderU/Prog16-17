@@ -40,6 +40,11 @@ public class DB40Ejemplo {
 		Empleado emp5 = new Empleado (5, "Ixone",3);
 		Empleado emp6 = new Empleado(6,"Iker",2);
 		
+		//Guardar Departamentos
+		manejadorDB.store(dep1);
+		manejadorDB.store(dep2);
+		manejadorDB.store(dep3);
+
 		// Guardamos en la BD
 		manejadorDB.store(emp1);
 		manejadorDB.store(emp2);
@@ -47,9 +52,7 @@ public class DB40Ejemplo {
 		manejadorDB.store(emp4);
 		manejadorDB.store(emp5);
 		manejadorDB.store(emp6);
-		
-		//Cerramos la conexión
-		//manejadorDB.close();
+
 		
 		JOptionPane.showMessageDialog(null, "Datos guardados!!");
 		
@@ -63,10 +66,14 @@ public class DB40Ejemplo {
 			ObjectSet<Departamento> resultado = manejadorDB.queryByExample(buscar);
 			ObjectSet<Empleado> resEmple = manejadorDB.queryByExample(buscEmpleado);
 			
+			//System.out.println(resultado.size());
+			//System.out.println(resEmple.size());
+			
 			if((resultado.size() == 0) || (resEmple.size() == 0)){
 				JOptionPane.showMessageDialog(null, "No hay datos");
 			}else{
-				String [] nombres = new String[resEmple.size()];
+				String [] nombres = new String [resEmple.size()];
+				//System.out.println(nombres.length);
 				int i = 0;
 				while (resEmple.hasNext()){
 					Empleado aux = resEmple.next();
@@ -78,7 +85,7 @@ public class DB40Ejemplo {
 				Departamento depAux = resultado.next();
 				System.out.println("Los empleados listados a continación pertenecen al departamento: "+depAux.getNombre());
 				for (int j = 0; j < nombres.length; j++) {
-					System.out.println("Empleado: "+nombres[i]);
+					System.out.println("Empleado: "+nombres[j]);
 				}// End for	
 			}// end if
 		} catch (NumberFormatException e) {
