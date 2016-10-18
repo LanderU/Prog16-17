@@ -88,6 +88,27 @@ public class DB40Ejemplo {
 					System.out.println("Empleado: "+nombres[j]);
 				}// End for	
 			}// end if
+			
+			// Borrar a Marcos
+			Empleado empMarcos = new Empleado(null,"Marcos",null);
+			ObjectSet<Empleado> resBorrar = manejadorDB.queryByExample(empMarcos);
+			if (resBorrar.size() == 0){
+				
+				JOptionPane.showMessageDialog(null, "Empleado no encontrado.");
+			}else{
+				while (resBorrar.hasNext()){
+					Empleado aux = resBorrar.next();
+					manejadorDB.delete(aux);
+					JOptionPane.showMessageDialog(null, "Empleado borrado");	
+				}// end while
+				Empleado ver = new Empleado(null,"Marcos",null);
+				ObjectSet<Empleado> busqueda = manejadorDB.queryByExample(ver);
+				if (busqueda.size() == 0){
+					JOptionPane.showMessageDialog(null, "Dato borrado");
+				}else{
+					JOptionPane.showMessageDialog(null, "Algo ha ido mal en el borrado.");
+				}// end if
+			}// end if
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			JOptionPane.showMessageDialog(null, "No es un número váido");
