@@ -4,10 +4,8 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLDataException;
-
+import java.sql.Connection;
+import java.sql.Statement;
 /**
  * 
  * @author Lander
@@ -24,8 +22,8 @@ public class EjercicioMysql1 {
 		
 		try {
 			Class.forName(FOR_NAME);
-			Connection conn = (Connection) DriverManager.getConnection(CONNECTION,USERNAME,PASSWORD);
-			Statement query = (Statement) conn.createStatement();
+			Connection conn = DriverManager.getConnection(CONNECTION,USERNAME,PASSWORD);
+			Statement query = conn.createStatement();
 			String sql = "select salario, apellido from empleados where salario = (select MAX(salario) from empleados)";
 			ResultSet resultado = query.executeQuery(sql);
 			
