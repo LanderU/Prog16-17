@@ -32,7 +32,9 @@ public class Servidor {
 			
 		} catch (Exception e) {
 			System.out.println("Error");
-		}// end try
+		}finally{
+			Servidor.close()
+		}
 		
 	}// main
 
