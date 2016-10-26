@@ -89,6 +89,8 @@ public class Mysql2 {
 												JOptionPane.showMessageDialog(null, "Departamento no válido");
 												System.exit(0);
 											}// end if
+											checkDepart.close();
+											findDepart.close();
 										} catch (NumberFormatException e) {
 											JOptionPane.showMessageDialog(null, "Número no válido");
 											System.exit(0);
@@ -102,6 +104,8 @@ public class Mysql2 {
 								JOptionPane.showMessageDialog(null, "El jefe tiene que ser un empleado");
 								System.exit(0);
 							}// end if
+							checkJefe.close();
+							numJefe.close();
 						} catch (NumberFormatException e) {
 							JOptionPane.showMessageDialog(null, "Número no válido");
 							System.exit(0);
@@ -109,9 +113,13 @@ public class Mysql2 {
 					}// end if
 				}// end if
 			}//end if
+			checkEmp.close();
+			numEmpleado.close();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Número no válido");
 			System.exit(0);
+		}finally{
+			conn.close();
 		}
 	}// main
 
