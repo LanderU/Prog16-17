@@ -18,8 +18,8 @@ public class Cliente {
 		try {
 			local = InetAddress.getLocalHost();
 			server = new Socket(local, PORT);
-			DataInputStream mensaje = new DataInputStream(server.getInputStream());
-			System.out.println(mensaje.readUTF());
+			DataInputStream recibido = new DataInputStream(server.getInputStream());
+			System.out.println(recibido.readUTF());
 			System.out.println("Primer mensaje leído");
 			// Mandamos el primer mensaje
 			DataOutputStream mensajeServer = new DataOutputStream(server.getOutputStream());
@@ -27,7 +27,7 @@ public class Cliente {
 			DataInputStream mensaje2 = new DataInputStream(server.getInputStream());
 			System.out.println(mensaje2.readUTF());
 			// Cerramos
-			mensaje.close();
+			recibido.close();
 			mensaje2.close();
 			server.close();
 		} catch (Exception e) {

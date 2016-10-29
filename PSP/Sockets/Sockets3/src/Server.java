@@ -18,8 +18,8 @@ public class Server {
 		Socket client;
 		try {
 			client = owner.accept();
-			PrintStream aceptacion = new PrintStream(client.getOutputStream());
-			aceptacion.print("Conexión aceptada");
+			DataOutputStream enviar = new DataOutputStream(client.getOutputStream());
+			enviar.writeUTF("Conexión aceptada");
 			System.out.println("Mandado el primer mensaje");
 			// Recibimos el mensaje del cliente
 			DataInputStream mensajeCliente = new DataInputStream(client.getInputStream());
@@ -29,7 +29,7 @@ public class Server {
 			segundoMensaje.writeUTF("Segundo mensaje");
 			System.out.println("Enviado el último mensaje.");
 			// Cerramos los flujos
-			aceptacion.close();
+			enviar.close();
 			mensajeCliente.close();
 			segundoMensaje.close();
 			client.close();
