@@ -9,7 +9,7 @@ SET cont = (SELECT count(*) from departamentos where dept_no = num);
 if (cont = 0)then
 	SET nom = 'INEXISTENTE';
 else
-	SET nom = 'EXISTENTE';
+	SET nom = (SELECT dnombre FROM departamentos where dept_no = num);
 END IF;
 
 return nom;
