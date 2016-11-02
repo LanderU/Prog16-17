@@ -34,7 +34,8 @@ public class MySql10 {
 			llamadaProcedimiento.registerOutParameter(3, Types.FLOAT);
 			llamadaProcedimiento.executeUpdate();
 			System.out.println("Salario medio de los empleados: "+llamadaProcedimiento.getFloat(2)+"\n Cantidad de empleados: "+(int)llamadaProcedimiento.getFloat(3));
-			
+			llamadaProcedimiento.close();
+			conn.close();
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			JOptionPane.showMessageDialog(null, "Número inválido");
