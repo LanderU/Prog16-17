@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySql11 {
 	
@@ -12,6 +16,8 @@ public class MySql11 {
 	public static final String CONNECTION="jdbc:mysql://localhost/ejercicio1?noAccessToProcedureBodies=true";
 	public static final String USERNAME="root";
 	public static final String PASSWORD="erle";
+	public static List<Departamento> listaDepartamentos = new ArrayList<Departamento>();
+
 	
 	public static void RellenarFichero() throws IOException{
 		// Datos
@@ -35,16 +41,19 @@ public class MySql11 {
 	}// end function
 	
 	public void CompararDatos() throws ClassNotFoundException, SQLException{
-		
 		Class.forName(FOR_NAME);
 		Connection conn = DriverManager.getConnection(CONNECTION,USERNAME,PASSWORD);
-		
+		Statement checkDepartamento = conn.createStatement();
+		ResultSet departs = checkDepartamento.executeQuery("SELECT * FROM departamentos");
+		while(departs.next()){
+			Departamento dep = new Departamento(departs.getInt(1),(String)departs.getString(2),departs.getString(3));
+			listaDepartamentos.add(dep);
+		}// end while
 	}// end function
 	
 	public static void main(String[] args) throws IOException {
 		// Rellenamos el fichero con los datos
 		RellenarFichero();
-		
 		
 		
 	}// main
