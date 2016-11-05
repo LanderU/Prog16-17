@@ -40,7 +40,7 @@ public class MySql11 {
 		escribir.close();
 	}// end function
 	
-	public void CompararDatos() throws ClassNotFoundException, SQLException{
+	public void RellenarLista() throws ClassNotFoundException, SQLException{
 		Class.forName(FOR_NAME);
 		Connection conn = DriverManager.getConnection(CONNECTION,USERNAME,PASSWORD);
 		Statement checkDepartamento = conn.createStatement();
@@ -49,6 +49,10 @@ public class MySql11 {
 			Departamento dep = new Departamento(departs.getInt(1),(String)departs.getString(2),departs.getString(3));
 			listaDepartamentos.add(dep);
 		}// end while
+		// Cerramos los flujos
+		departs.close();
+		checkDepartamento.close();
+		conn.close();
 	}// end function
 	
 	public static void main(String[] args) throws IOException {

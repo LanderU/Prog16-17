@@ -3,7 +3,7 @@
  * @author Lander
  *
  */
-public class Departamento {
+public class Departamento implements Serializable{
 
 	private int dept_no;
 	private String dnombre;
