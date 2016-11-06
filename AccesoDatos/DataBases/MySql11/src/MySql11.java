@@ -97,7 +97,7 @@ public class MySql11 {
 			}else{
 				JOptionPane.showMessageDialog(null, "Datos invalidos");
 			}
-			
+			depAux = (Departamento) datos.readObject();
 			index++;
 		}// end while
 		
