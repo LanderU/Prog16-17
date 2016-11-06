@@ -27,9 +27,9 @@ public class MySql11 {
 	
 	public static void RellenarFichero() throws IOException{
 		// Datos
-		int [] numDepart = {10,20,60,70};
+		int [] numDepart = {10,20,30,40};
 		String [] nomDepart = {"CONTABILIDAD","I+D","DIRECCION","??"};
-		String [] localidad = {"SEVILLA","GIRONA","AMURRIO","TEGUCIGALPA"};
+		String [] localidad = {"SEVILLA","GIRONA","AMURRIO","KK"};
 		File find = new File("DatosDepartamentos");
 		if(!(find.exists())){
 			FileOutputStream escribir = new FileOutputStream(new File ("DatosDepartamentos"));
@@ -77,30 +77,34 @@ public class MySql11 {
 			if (listaDepartamentos.contains(depAux)){
 				JOptionPane.showMessageDialog(null, "Nada que actualizar");
 			}else if(listaDepartamentos.get(index).getDept_no() != depAux.getDept_no()){
-				JOptionPane.showMessageDialog(null, "La clave primaria no puede ser modificada");
-			}else if((listaDepartamentos.get(index).getDept_no() == depAux.getDept_no()) && (!listaDepartamentos.get(index).getDnombre().equals(depAux.getDnombre())) && (listaDepartamentos.get(index).getLocalidad().equals(depAux.getLocalidad()))){
-				JOptionPane.showMessageDialog(null, "Se actualizará el nombre del departamento");
-				sql = "UPDATE departamentos SET dnombre = ? WHERE dept_no = ?";
-				sentencia = conn.prepareStatement(sql);
-				sentencia.setString(1, depAux.getDnombre());
-				sentencia.setInt(2, depAux.getDept_no());
-				sentencia.close();
-				conn.close();
-			}else if ((listaDepartamentos.get(index).getDept_no() == depAux.getDept_no()) && (listaDepartamentos.get(index).getDnombre().equals(depAux.getDnombre())) && (!listaDepartamentos.get(index).getLocalidad().equals(depAux.getLocalidad()))){
-				JOptionPane.showMessageDialog(null, "Se actualizará la localidad");
-				sql = "UPDATE departamentos SET loc = ? WHERE dept_no = ?";
-				sentencia = conn.prepareStatement(sql);
-				sentencia.setString(1, depAux.getLocalidad());
-				sentencia.setInt(2, depAux.getDept_no());
-				sentencia.close();
-				conn.close();
-			}else{
-				JOptionPane.showMessageDialog(null, "Datos invalidos");
-			}
+				JOptionPane.showMessageDialog(null, "La clave primaria no puede ser modificada"+ listaDepartamentos.get(index).getDept_no()+" "+depAux.getDept_no());
+			}else if(listaDepartamentos.get(index).getDept_no() == depAux.getDept_no()){
+				 if (!listaDepartamentos.get(index).getDnombre().equals(depAux.getDnombre())){
+						JOptionPane.showMessageDialog(null, "Se actualizará el nombre del departamento");
+						sql = "UPDATE departamentos SET dnombre = ? WHERE dept_no = ?";
+						sentencia = conn.prepareStatement(sql);
+						sentencia.setString(1, depAux.getDnombre());
+						sentencia.setInt(2, depAux.getDept_no());
+						sentencia.executeUpdate();
+						sentencia.close();
+				 }else if (!listaDepartamentos.get(index).getLocalidad().equals(depAux.getLocalidad())){
+					 JOptionPane.showMessageDialog(null, "Se actualizará la locaclidad");
+						sql = "UPDATE departamentos SET loc = ? WHERE dept_no = ?";
+						sentencia = conn.prepareStatement(sql);
+						sentencia.setString(1, depAux.getLocalidad());
+						sentencia.setInt(2, depAux.getDept_no());
+						sentencia.executeUpdate();
+						sentencia.close();
+				 }else{
+					 JOptionPane.showMessageDialog(null, "Cambios no aceptados");
+				 }// end if
+			}// end if
+			
 			depAux = (Departamento) datos.readObject();
 			index++;
 		}// end while
 		
+		conn.close();
 		datos.close();
 		leer.close();
 	}// end function
