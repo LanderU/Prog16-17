@@ -77,24 +77,24 @@ public class MySql11 {
 			if (listaDepartamentos.contains(depAux)){
 				JOptionPane.showMessageDialog(null, "Nada que actualizar");
 			}else if(listaDepartamentos.get(index).getDept_no() != depAux.getDept_no()){
-				JOptionPane.showMessageDialog(null, "La clave primaria no puede ser modificada"+ listaDepartamentos.get(index).getDept_no()+" "+depAux.getDept_no());
+				JOptionPane.showMessageDialog(null, "La clave primaria no puede ser modificada");
 			}else if(listaDepartamentos.get(index).getDept_no() == depAux.getDept_no()){
 				 if (!listaDepartamentos.get(index).getDnombre().equals(depAux.getDnombre())){
-						JOptionPane.showMessageDialog(null, "Se actualizará el nombre del departamento");
-						sql = "UPDATE departamentos SET dnombre = ? WHERE dept_no = ?";
-						sentencia = conn.prepareStatement(sql);
-						sentencia.setString(1, depAux.getDnombre());
-						sentencia.setInt(2, depAux.getDept_no());
-						sentencia.executeUpdate();
-						sentencia.close();
+					JOptionPane.showMessageDialog(null, "Se actualizará el nombre del departamento");
+					sql = "UPDATE departamentos SET dnombre = ? WHERE dept_no = ?";
+					sentencia = conn.prepareStatement(sql);
+					sentencia.setString(1, depAux.getDnombre());
+					sentencia.setInt(2, depAux.getDept_no());
+					sentencia.executeUpdate();
+					sentencia.close();
 				 }else if (!listaDepartamentos.get(index).getLocalidad().equals(depAux.getLocalidad())){
-					 JOptionPane.showMessageDialog(null, "Se actualizará la locaclidad");
-						sql = "UPDATE departamentos SET loc = ? WHERE dept_no = ?";
-						sentencia = conn.prepareStatement(sql);
-						sentencia.setString(1, depAux.getLocalidad());
-						sentencia.setInt(2, depAux.getDept_no());
-						sentencia.executeUpdate();
-						sentencia.close();
+					JOptionPane.showMessageDialog(null, "Se actualizará la locaclidad");
+					sql = "UPDATE departamentos SET loc = ? WHERE dept_no = ?";
+					sentencia = conn.prepareStatement(sql);
+					sentencia.setString(1, depAux.getLocalidad());
+					sentencia.setInt(2, depAux.getDept_no());
+					entencia.executeUpdate();
+					sentencia.close();
 				 }else{
 					 JOptionPane.showMessageDialog(null, "Cambios no aceptados");
 				 }// end if
