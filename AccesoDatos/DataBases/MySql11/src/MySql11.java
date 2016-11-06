@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -63,11 +64,15 @@ public class MySql11 {
 		conn.close();
 	}// end function
 	
-	public static void ActualizarDatos() throws IOException, ClassNotFoundException{
+	public static void ActualizarDatos() throws IOException, ClassNotFoundException, SQLException{
 		FileInputStream leer = new FileInputStream(new File ("DatosDepartamentos"));
 		datos = new ObjectInputStream(leer);
 		Departamento depAux = (Departamento) datos.readObject();
 		int index = 0;
+		Class.forName(FOR_NAME);
+		Connection conn = DriverManager.getConnection(CONNECTION,USERNAME,PASSWORD);
+		String sql = "";
+		PreparedStatement sentencia =  null;
 		while(depAux != null){
 			if (listaDepartamentos.contains(depAux)){
 				JOptionPane.showMessageDialog(null, "Nada que actualizar");
@@ -75,8 +80,22 @@ public class MySql11 {
 				JOptionPane.showMessageDialog(null, "La clave primaria no puede ser modificada");
 			}else if((listaDepartamentos.get(index).getDept_no() == depAux.getDept_no()) && (!listaDepartamentos.get(index).getDnombre().equals(depAux.getDnombre())) && (listaDepartamentos.get(index).getLocalidad().equals(depAux.getLocalidad()))){
 				JOptionPane.showMessageDialog(null, "Se actualizará el nombre del departamento");
+				sql = "UPDATE departamentos SET dnombre = ? WHERE dept_no = ?";
+				sentencia = conn.prepareStatement(sql);
+				sentencia.setString(1, depAux.getDnombre());
+				sentencia.setInt(2, depAux.getDept_no());
+				sentencia.close();
+				conn.close();
 			}else if ((listaDepartamentos.get(index).getDept_no() == depAux.getDept_no()) && (listaDepartamentos.get(index).getDnombre().equals(depAux.getDnombre())) && (!listaDepartamentos.get(index).getLocalidad().equals(depAux.getLocalidad()))){
 				JOptionPane.showMessageDialog(null, "Se actualizará la localidad");
+				sql = "UPDATE departamentos SET loc = ? WHERE dept_no = ?";
+				sentencia = conn.prepareStatement(sql);
+				sentencia.setString(1, depAux.getLocalidad());
+				sentencia.setInt(2, depAux.getDept_no());
+				sentencia.close();
+				conn.close();
+			}else{
+				JOptionPane.showMessageDialog(null, "Datos invalidos");
 			}
 			
 			index++;
