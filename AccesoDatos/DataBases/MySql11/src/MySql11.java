@@ -101,7 +101,8 @@ public class MySql11 {
 			index++;
 		}// end while
 		
-		
+		datos.close();
+		leer.close();
 	}// end function
 	
 	
