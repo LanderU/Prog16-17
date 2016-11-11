@@ -26,6 +26,7 @@ public class Client {
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
+		socket.close();
 	}// main
 
 }// class
