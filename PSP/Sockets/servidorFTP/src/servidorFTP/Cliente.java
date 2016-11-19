@@ -1,13 +1,12 @@
 package servidorFTP;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import javax.swing.JOptionPane;
-
-import org.omg.CORBA.DataOutputStream;
-
 /**
  * 
  * @author Lander
@@ -29,6 +28,7 @@ public class Cliente {
 		try {
 			local = InetAddress.getLocalHost();
 			servidor = new Socket(local, PUERTO);
+			servidor.setSoTimeout(4000);
 			// Nos quedamos con la cantidad de ficheros
 			recibido = new DataInputStream(servidor.getInputStream());
 			int cantidadFicheros = recibido.readInt();
@@ -41,16 +41,29 @@ public class Cliente {
 			}// end for
 			System.out.println("Seleccione un fichero de la lista para descargar: ");
 			for (int i = 0; i < nomFicheros.length; i++) {
-				System.out.println(i+1+"Nombre del fichero: "+nomFicheros[i]);
+				System.out.println(i+1+"- Nombre del fichero: "+nomFicheros[i]);
 			}
 			try {
 				int opcion = Integer.parseInt(JOptionPane.showInputDialog("Introduzca el número del fichero"));
+				// Nos quedamos con el nombre de la posición en el array
+				if (opcion <= 0){
+					JOptionPane.showMessageDialog(null, "El número no puede ser menor o igual a 0");
+				}else{
+					String nomFichero = nomFicheros[opcion-1];
+					enviado = new DataOutputStream(servidor.getOutputStream());
+					enviado.writeUTF(nomFichero);
+					// Recibimos el tamaño del fichero por parte del servidor
+					recibido = new DataInputStream(servidor.getInputStream());
+					int tamFichero = recibido.readInt();
+				}
 			} catch (NumberFormatException e) {
-				// TODO: handle exception
 				JOptionPane.showMessageDialog(null, "Número inválido");
 			}
 			
-		} catch (Exception e) {
+		} catch (SocketTimeoutException e) {
+			// Controlamos la excepción el tiempo del socket
+			JOptionPane.showMessageDialog(null, "Tiempo del socket expirado");
+		}catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.toString());
 		}

@@ -1,12 +1,15 @@
 package servidorFTP;
 
-import java.io.DataInput;
-import java.io.DataOutput;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.Buffer;
 
 /**
  * @author Lander
@@ -27,7 +30,11 @@ public class Servidor {
 		File [] listaFicheros = directorioFicheros.listFiles();
 		// Streams
 		DataOutputStream envio = null;
-		DataInput recibido = null;
+		DataInputStream recibido = null;
+		String nomFichero = "";
+		BufferedOutputStream bufferSalida = null;
+		BufferedInputStream bufferEntrada = null;
+		byte [] bufferLeido = null;
 		
 		while(true){
 			cliente = servidor.accept();
@@ -39,6 +46,34 @@ public class Servidor {
 			 for (int i = 0; i < listaFicheros.length; i++) {
 				 envio.writeUTF(listaFicheros[i].getName());
 			}// end for
+			// Recibimos por parte del cliente el nombre del fichero a descargar
+			recibido = new DataInputStream(cliente.getInputStream());
+			nomFichero = recibido.readUTF();
+			// Leemos los datos del arvhivo para poder recibirnos en el cliente
+			File ficheroEnviar = new File(nomFichero);
+			envio = new DataOutputStream(cliente.getOutputStream());
+			// Enviamos el tamaño
+			envio.writeInt((int)ficheroEnviar.length());
+			// Preparamos los streams para el envío de los datos
+			FileInputStream lectura = new FileInputStream(ficheroEnviar);
+			bufferEntrada = new BufferedInputStream(lectura);
+			bufferSalida = new BufferedOutputStream(cliente.getOutputStream());
+			// Buffer de bytes leídos desde el fichero
+			bufferLeido = new byte [(int) ficheroEnviar.length()];
+			// Introducimos el contenido del fichero en el array
+			bufferEntrada.read(bufferLeido);
+			
+			// Recorremos el array de bytes y lo enviamos
+			for (int i = 0; i < bufferLeido.length; i++) {
+				
+				bufferSalida.write(bufferLeido [i]);
+				
+			}// end for
+			
+			// Cerramos los streams
+			bufferSalida.close();
+			bufferEntrada.close();
+			
 		}// end while
 		
 	}// main
