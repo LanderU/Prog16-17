@@ -18,6 +18,7 @@ import java.nio.Buffer;
 public class Servidor {
 	
 	private static final int PUERTO = 6300;
+	private static final String PATH = "/home/lander/FTP";
 	
 	public static void main(String[] args) throws IOException {
 		// Creamos el server socket
@@ -25,7 +26,13 @@ public class Servidor {
 		// Creamos el socket de parte del cliente
 		Socket cliente = null;
 		// Ruta de los ficheros en el servidor
-		File directorioFicheros = new File("/home/lander/FTP");
+		File directorioFicheros = new File(PATH);
+		
+		if (!directorioFicheros.exists()){
+			
+			JOptionPane.showMessageDialog(null, "Directorio no encontrado cambie la constante \"PATH\" en el servidor.");
+			System.exit(0);
+		}
 		// Array de ficheros/carpetas contenidos en el directorio
 		File [] listaFicheros = directorioFicheros.listFiles();
 		// Streams
@@ -35,7 +42,6 @@ public class Servidor {
 		BufferedOutputStream bufferSalida = null;
 		BufferedInputStream bufferEntrada = null;
 		byte [] bufferLeido = null;
-		
 		while(true){
 			cliente = servidor.accept();
 			System.out.println("Conexión aceptada desde: "+ cliente.getInetAddress());
