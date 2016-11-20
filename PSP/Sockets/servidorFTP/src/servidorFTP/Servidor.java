@@ -11,6 +11,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.Buffer;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author Lander
  */
@@ -18,7 +20,7 @@ import java.nio.Buffer;
 public class Servidor {
 	
 	private static final int PUERTO = 6300;
-	private static final String PATH = "/home/lander/FTP";
+	private static final String PATH = "/home/lander/FTP/";
 	
 	public static void main(String[] args) throws IOException {
 		// Creamos el server socket
@@ -27,10 +29,8 @@ public class Servidor {
 		Socket cliente = null;
 		// Ruta de los ficheros en el servidor
 		File directorioFicheros = new File(PATH);
-		
 		if (!directorioFicheros.exists()){
-			
-			JOptionPane.showMessageDialog(null, "Directorio no encontrado cambie la constante \"PATH\" en el servidor.");
+			JOptionPane.showMessageDialog(null, "Cambie la constante PATH en el servidor");
 			System.exit(0);
 		}
 		// Array de ficheros/carpetas contenidos en el directorio
@@ -42,6 +42,7 @@ public class Servidor {
 		BufferedOutputStream bufferSalida = null;
 		BufferedInputStream bufferEntrada = null;
 		byte [] bufferLeido = null;
+		
 		while(true){
 			cliente = servidor.accept();
 			System.out.println("Conexión aceptada desde: "+ cliente.getInetAddress());
@@ -56,7 +57,9 @@ public class Servidor {
 			recibido = new DataInputStream(cliente.getInputStream());
 			nomFichero = recibido.readUTF();
 			// Leemos los datos del arvhivo para poder recibirnos en el cliente
-			File ficheroEnviar = new File(nomFichero);
+			// debug
+			//System.out.println(nomFichero);
+			File ficheroEnviar = new File(PATH+nomFichero);
 			envio = new DataOutputStream(cliente.getOutputStream());
 			// Enviamos el tamaño
 			envio.writeInt((int)ficheroEnviar.length());

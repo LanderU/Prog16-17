@@ -1,7 +1,10 @@
 package servidorFTP;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -37,7 +40,7 @@ public class Cliente {
 			// Recorremos los ficheros y los guardamos en el array
 			for (int i = 0; i < cantidadFicheros; i++) {
 				recibido = new DataInputStream(servidor.getInputStream());
-				nomFicheros[i] = recibido.readUTF();
+				nomFicheros[i] = recibido.readUTF().toString();
 			}// end for
 			System.out.println("Seleccione un fichero de la lista para descargar: ");
 			for (int i = 0; i < nomFicheros.length; i++) {
@@ -50,11 +53,31 @@ public class Cliente {
 					JOptionPane.showMessageDialog(null, "El número no puede ser menor o igual a 0");
 				}else{
 					String nomFichero = nomFicheros[opcion-1];
+					System.out.println(nomFichero);
 					enviado = new DataOutputStream(servidor.getOutputStream());
 					enviado.writeUTF(nomFichero);
 					// Recibimos el tamaño del fichero por parte del servidor
 					recibido = new DataInputStream(servidor.getInputStream());
-					int tamFichero = recibido.readInt();
+					int tamFichero = (int) recibido.readInt();
+					FileOutputStream path = new FileOutputStream(nomFichero);
+					BufferedOutputStream escritura = new BufferedOutputStream(path);
+					BufferedInputStream lectura = new BufferedInputStream(servidor.getInputStream());
+					byte [] bufferFichero = new byte [tamFichero];
+					// Leemos los ficheros
+					for (int i = 0; i < bufferFichero.length; i++) {
+						bufferFichero [i] = (byte) lectura.read();
+						
+					}// end for
+					
+					//Persistimos el ficheros
+					escritura.write(bufferFichero);
+					// Cerramos los flujos
+					escritura.flush();
+					lectura.close();
+					escritura.close();
+					servidor.close();
+					JOptionPane.showMessageDialog(null, "Fichero guardado");
+					
 				}
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Número inválido");
