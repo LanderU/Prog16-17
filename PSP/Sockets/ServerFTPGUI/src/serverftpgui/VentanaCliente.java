@@ -9,6 +9,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -34,14 +35,24 @@ public class VentanaCliente extends javax.swing.JFrame {
     // Streams
     private static DataInputStream recibido = null;
     private static DataOutputStream enviado = null;
+    // Para el cliente
+    private static final String PATH = "/home/lander/FTPCliente/";
     
     public VentanaCliente() {
         initComponents();
         this.jButton1.setEnabled(false);
         this.jComboBox1.removeAllItems();
         this.jButton2.setText("Conectar");
-        this.jButton1.setText("Decargar");
+        this.jButton1.setText("Download");
         this.jLabel1.setText("Ficheros disponibles");
+        this.jButton3.setEnabled(false);
+        this.jButton3.setText("Upload");
+        this.jComboBox1.setVisible(false);
+        this.jLabel1.setVisible(false);
+        this.jButton4.setVisible(false);
+        this.jButton5.setVisible(false);
+        this.jButton4.setText("Complet download");
+        this.jButton5.setText("Complet upload ");
     }// Constructor
 
     /**
@@ -57,6 +68,9 @@ public class VentanaCliente extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,6 +93,22 @@ public class VentanaCliente extends javax.swing.JFrame {
 
         jLabel1.setText("jLabel1");
 
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("jButton5");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,13 +120,26 @@ public class VentanaCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(162, 162, 162)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(140, 140, 140)
-                        .addComponent(jLabel1)))
-                .addContainerGap(159, Short.MAX_VALUE))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(116, 116, 116)
+                                .addComponent(jButton1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(95, 95, 95)
+                                .addComponent(jButton4)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(jButton5)))))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,9 +149,15 @@ public class VentanaCliente extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(154, 154, 154)
-                .addComponent(jButton1)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(79, 79, 79)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         pack();
@@ -118,30 +167,20 @@ public class VentanaCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (this.jButton2.getText().equals("Conectar")){
             this.jButton2.setText("Desconectar");
-            try {
-              local = InetAddress.getLocalHost();
-              servidor = new Socket(local, PUERTO);
-              servidor.setSoTimeout(4000);
-              // Nos quedamos con la cantidad de ficheros
-              recibido = new DataInputStream(servidor.getInputStream());
-              int cantidadFicheros = recibido.readInt();
-              // Recorremos los ficheros y los guardamos en el array
-            for (int i = 0; i < cantidadFicheros; i++) {
-                recibido = new DataInputStream(servidor.getInputStream());
-		this.jComboBox1.addItem(recibido.readUTF().toString());
-            }// end for
-            } catch (SocketTimeoutException e) {
-                JOptionPane.showMessageDialog(null, "Tiempo del socket expirado");
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(VentanaCliente.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(VentanaCliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.jButton3.setEnabled(true);
             this.jButton1.setEnabled(true);
+            this.jButton1.setVisible(true);
+            this.jButton3.setVisible(true);
         }else{
             this.jButton2.setText("Conectar");
             this.jButton1.setEnabled(false);
             this.jComboBox1.removeAllItems();
+            this.jButton3.setEnabled(false);
+            this.jLabel1.setVisible(false);
+            this.jButton3.setVisible(false);
+            this.jButton4.setVisible(false);
+            this.jButton5.setVisible(false);
+            this.jButton1.setVisible(false);
             try {
                 servidor.close();
             } catch (IOException ex) {
@@ -152,7 +191,34 @@ public class VentanaCliente extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            // TODO add your handling code here:
+            this.jLabel1.setText("Ficheros en el servidor");
+            this.jLabel1.setVisible(true);
+            this.jComboBox1.setVisible(true);
+            local = InetAddress.getLocalHost();
+            servidor = new Socket(local, PUERTO);
+            servidor.setSoTimeout(4000);
+            // Nos quedamos con la cantidad de ficheros
+            recibido = new DataInputStream(servidor.getInputStream());
+            int cantidadFicheros = recibido.readInt();
+            // Recorremos los ficheros y los guardamos en el array
+            for (int i = 0; i < cantidadFicheros; i++) {
+                recibido = new DataInputStream(servidor.getInputStream());
+		this.jComboBox1.addItem(recibido.readUTF().toString());
+            }// end for
+             this.jButton4.setVisible(true);
+             this.jButton1.setVisible(false);
+             this.jButton3.setVisible(false);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        try{
             enviado = new DataOutputStream(servidor.getOutputStream());
             enviado.writeUTF(this.jComboBox1.getSelectedItem().toString());
             // Recibimos el tamaño del fichero por parte del servidor
@@ -166,20 +232,36 @@ public class VentanaCliente extends javax.swing.JFrame {
             for (int i = 0; i < bufferFichero.length; i++) {
                 bufferFichero [i] = (byte) lectura.read();
             }// end for
-            
             //Persistimos el ficheros
             escritura.write(bufferFichero);
             escritura.flush();
             lectura.close();
             escritura.close();
-            JOptionPane.showMessageDialog(null, "Fichero guardado");
-            
-        }catch (IOException e){
+            JOptionPane.showMessageDialog(null, "Fichero descargado con éxito");
+        }catch(IOException e){
             e.printStackTrace();
         }
+        this.jButton4.setVisible(false);
+        this.jComboBox1.removeAllItems();
+        this.jButton1.setVisible(true);
+        this.jLabel1.setVisible(false);
+        this.jButton3.setVisible(true);
+            
 
+         
+            
+       
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.jLabel1.setVisible(true);
+        this.jLabel1.setText("Ficheros en el cliente");
+        this.jButton1.setVisible(false);
+        this.jButton5.setVisible(true);
+        this.jButton3.setVisible(false);
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,6 +301,9 @@ public class VentanaCliente extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
