@@ -9,13 +9,11 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -108,6 +106,11 @@ public class VentanaCliente extends javax.swing.JFrame {
         });
 
         jButton5.setText("jButton5");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -260,8 +263,29 @@ public class VentanaCliente extends javax.swing.JFrame {
         this.jButton1.setVisible(false);
         this.jButton5.setVisible(true);
         this.jButton3.setVisible(false);
+        this.jComboBox1.setVisible(true);
+        File clienteDirectorio = new File(PATH);
+        File [] listaCliente = clienteDirectorio.listFiles();
+        
+        for(int i = 0; i < listaCliente.length; i++){
+            this.jComboBox1.addItem(listaCliente[i].getName());
+        }// end for
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            // Nos conectamos al servidor
+            local = InetAddress.getLocalHost();
+            servidor = new Socket(local, PUERTO);
+            servidor.setSoTimeout(4000);
+            
+        } catch (IOException e) {
+        }
+
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
