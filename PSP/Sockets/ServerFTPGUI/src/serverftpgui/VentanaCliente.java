@@ -5,11 +5,14 @@
  */
 package serverftpgui;
 
+import com.sun.xml.internal.stream.writers.WriterUtility;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -200,6 +203,9 @@ public class VentanaCliente extends javax.swing.JFrame {
             local = InetAddress.getLocalHost();
             servidor = new Socket(local, PUERTO);
             servidor.setSoTimeout(4000);
+            // Envíamos el flag
+            enviado = new DataOutputStream(servidor.getOutputStream());
+            enviado.writeInt(0);
             // Nos quedamos con la cantidad de ficheros
             recibido = new DataInputStream(servidor.getInputStream());
             int cantidadFicheros = recibido.readInt();
@@ -227,7 +233,7 @@ public class VentanaCliente extends javax.swing.JFrame {
             // Recibimos el tamaño del fichero por parte del servidor
             recibido = new DataInputStream(servidor.getInputStream());
             int tamFichero = (int) recibido.readInt();
-            FileOutputStream path = new FileOutputStream(this.jComboBox1.getSelectedItem().toString());
+            FileOutputStream path = new FileOutputStream(PATH+this.jComboBox1.getSelectedItem().toString());
             BufferedOutputStream escritura = new BufferedOutputStream(path);
             BufferedInputStream lectura = new BufferedInputStream(servidor.getInputStream());
             byte [] bufferFichero = new byte [tamFichero];
@@ -255,7 +261,9 @@ public class VentanaCliente extends javax.swing.JFrame {
             
        
     }//GEN-LAST:event_jButton4ActionPerformed
-
+        File clienteDirectorio = null;
+        File [] listaCliente = null;
+        
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         this.jLabel1.setVisible(true);
@@ -264,9 +272,8 @@ public class VentanaCliente extends javax.swing.JFrame {
         this.jButton5.setVisible(true);
         this.jButton3.setVisible(false);
         this.jComboBox1.setVisible(true);
-        File clienteDirectorio = new File(PATH);
-        File [] listaCliente = clienteDirectorio.listFiles();
-        
+        clienteDirectorio = new File(PATH);
+        listaCliente = clienteDirectorio.listFiles();
         for(int i = 0; i < listaCliente.length; i++){
             this.jComboBox1.addItem(listaCliente[i].getName());
         }// end for
@@ -280,10 +287,40 @@ public class VentanaCliente extends javax.swing.JFrame {
             local = InetAddress.getLocalHost();
             servidor = new Socket(local, PUERTO);
             servidor.setSoTimeout(4000);
-            
+            // Envíamos el flag
+            enviado = new DataOutputStream(servidor.getOutputStream());
+            enviado.writeInt(1);
+            // Enviamos el nombre del fichero
+            enviado = new DataOutputStream(servidor.getOutputStream());
+            enviado.writeUTF(this.jComboBox1.getSelectedItem().toString());
+            // Enviamos el tamaño del fichero
+            enviado = new DataOutputStream(servidor.getOutputStream());
+            File ficheroEnviar = new File(PATH+this.jComboBox1.getSelectedItem().toString());
+            enviado.writeInt((int)ficheroEnviar.length());
+            // Streams para enviar los datos
+            FileInputStream lectura = new FileInputStream(ficheroEnviar);
+            BufferedInputStream bufferEntrada = new BufferedInputStream(lectura);
+            BufferedOutputStream bufferSalida = new BufferedOutputStream(servidor.getOutputStream());
+            byte [] bufferFichero = new byte [(int) ficheroEnviar.length()];
+            bufferEntrada.read(bufferFichero);
+            // Recorremos el array y lo enviamos
+            for (int i = 0; i < bufferFichero.length; i++) {
+                
+                bufferSalida.write(bufferFichero[i]);
+                
+            }// end for
+            // Cerramos los flujos
+            lectura.close();
+            bufferEntrada.close();
+            bufferSalida.close();
+
         } catch (IOException e) {
         }
-
+        this.jLabel1.setVisible(false);
+        this.jButton5.setVisible(false);
+        this.jButton1.setVisible(true);
+        this.jButton3.setVisible(true);
+        this.jComboBox1.removeAllItems();
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
