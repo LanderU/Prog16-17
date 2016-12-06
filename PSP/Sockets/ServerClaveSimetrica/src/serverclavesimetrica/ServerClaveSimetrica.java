@@ -35,30 +35,16 @@ public class ServerClaveSimetrica {
     
     public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         
-        ServerSocket owner = null;
-        try {
-            owner = new ServerSocket(PORT);
-        } catch (IOException ex) {
-            Logger.getLogger(ServerClaveSimetrica.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Socket cliente = null;
+        ServerSocket owner = new ServerSocket(PORT);
+        Socket cliente;
         
         while (true){
             System.out.println("Esperando una conexión entrante...");
             cliente = owner.accept();
-            System.out.println("Conexión aceptada desde: "+cliente.getInetAddress());
-            // Recibimos el key
-            ObjectInputStream recibido = new ObjectInputStream(cliente.getInputStream());
-            Key key = (Key) recibido.readObject();
-            byte [] textoCifrado = (byte[]) recibido.readObject();
-            System.out.println("Mensaje cifrado: "+new String(textoCifrado));
-            // Desencriptamos el mensaje
-            Cipher aesCipher = Cipher.getInstance("AES");
-            aesCipher.init(Cipher.DECRYPT_MODE,key);
-            String descifrado = new String (aesCipher.doFinal(textoCifrado));
-            System.out.println("Mensaje descrifrado: "+descifrado);
-                    
-        
+            System.out.println("Conexión aceptada desde: "+cliente.getInetAddress());  
+            Hilo h = new Hilo(cliente);
+            h.start();
+            
         }// end while
     }// main
     

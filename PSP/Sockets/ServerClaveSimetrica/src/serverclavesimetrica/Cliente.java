@@ -1,9 +1,6 @@
 package serverclavesimetrica;
 
-import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.security.InvalidKeyException;
