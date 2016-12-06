@@ -6,17 +6,10 @@
 package servidorclaveasimetricas;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+
 
 /**
  *
@@ -30,30 +23,16 @@ public class ServidorClaveAsimetricas {
     
     private static final int PUERTO = 5656;
     
-    public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        // TODO code application logic here
-        ServerSocket servidor = null;
-        Socket cliente = null;
-        
-        try {
-            servidor = new ServerSocket(PUERTO);
-            
-        } catch (IOException e) {
-        }
+    public static void main(String[] args) throws IOException{
+        ServerSocket servidor =  new ServerSocket(PUERTO);
+        Socket cliente;
         
         while (true){
             System.out.println("Esperando una conexión entrante...");
             cliente = servidor.accept();
             System.out.println("Conexión aceptada desde: "+cliente.getInetAddress());
-            // Recibimos la clave pública
-            ObjectInputStream recibido = new ObjectInputStream(cliente.getInputStream());
-            Key publicKey = (Key) recibido.readObject();
-            Cipher rsa = Cipher.getInstance("RSA");
-            rsa.init(Cipher.ENCRYPT_MODE, publicKey);
-            byte [] textoPlano = "Hola Lander".getBytes();
-            byte [] encriptado = rsa.doFinal(textoPlano);
-            ObjectOutputStream envio = new ObjectOutputStream(cliente.getOutputStream());
-            envio.writeObject(encriptado);
+            Hilo h = new Hilo(cliente);
+            h.start();
         }// end while
         
     }// main
