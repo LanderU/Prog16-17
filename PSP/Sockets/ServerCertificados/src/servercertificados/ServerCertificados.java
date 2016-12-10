@@ -30,32 +30,13 @@ public class ServerCertificados {
         // TODO code application logic here
         ServerSocket servidor = new ServerSocket(PUERTO);
         Socket cliente;
-        ObjectInputStream recibido = null;
-        Signature certificado = Signature.getInstance("DSA");
+        Hilo h = null;
        
         while(true){
             System.out.println("Esperando una conexión...");
             cliente = servidor.accept();
-            // Recibimos el key
-            recibido = new ObjectInputStream(cliente.getInputStream());
-            Key clave = (Key) recibido.readObject();
-            // Recibimos el mansaje
-            byte [] mensaje = (byte [])recibido.readObject();
-            System.out.println("El mensaje recibido es: "+new String(mensaje));
-            // Recibimos la firma
-            byte [] firma = (byte []) recibido.readObject();
-            // Comprobamos
-            certificado.initVerify((PublicKey) clave);
-            certificado.update(mensaje);
-            if(certificado.verify(firma)){
-                System.out.println("Mensaje correcto");
-            }else{
-                System.out.println("Algo ha pasado");
-            }
-            
-            
-            
-        
+            h = new Hilo(cliente);
+            h.start();
         }// end while
     }// main
     
