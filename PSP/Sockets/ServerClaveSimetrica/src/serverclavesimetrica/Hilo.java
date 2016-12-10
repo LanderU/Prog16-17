@@ -22,26 +22,26 @@ import javax.crypto.NoSuchPaddingException;
  *
  * @author lander
  */
-public class Hilo extends Thread{
-    
+public class Hilo extends Thread {
+
     private Socket cliente = null;
-    
-    public Hilo(Socket h){
+
+    public Hilo(Socket h) {
         cliente = h;
     }// end constructor
-    
+
     @Override
-    public void run(){
+    public void run() {
         // Recibimos el key
-        ObjectInputStream recibido = null; 
-        
+        ObjectInputStream recibido = null;
+
         try {
             recibido = new ObjectInputStream(cliente.getInputStream());
         } catch (IOException ex) {
             Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
         }
         Key key = null;
-        
+
         try {
             key = (Key) recibido.readObject();
         } catch (IOException ex) {
@@ -49,7 +49,7 @@ public class Hilo extends Thread{
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        byte [] textoCifrado = null;
+        byte[] textoCifrado = null;
         try {
             textoCifrado = (byte[]) recibido.readObject();
         } catch (IOException ex) {
@@ -57,10 +57,10 @@ public class Hilo extends Thread{
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Mensaje cifrado: "+new String(textoCifrado));
+        System.out.println("Mensaje cifrado: " + new String(textoCifrado));
         // Desencriptamos el mensaje
-        Cipher aesCipher = null; 
-        
+        Cipher aesCipher = null;
+
         try {
             aesCipher = Cipher.getInstance("AES");
         } catch (NoSuchAlgorithmException ex) {
@@ -69,20 +69,25 @@ public class Hilo extends Thread{
             Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            aesCipher.init(Cipher.DECRYPT_MODE,key);
+            aesCipher.init(Cipher.DECRYPT_MODE, key);
         } catch (InvalidKeyException ex) {
             Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
         }
         String descifrado = "";
         try {
-            descifrado = new String (aesCipher.doFinal(textoCifrado));
+            descifrado = new String(aesCipher.doFinal(textoCifrado));
         } catch (IllegalBlockSizeException ex) {
             Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BadPaddingException ex) {
             Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Mensaje descrifrado: "+descifrado);
-    
+        System.out.println("Mensaje descrifrado: " + descifrado);
+        try {
+            recibido.close();
+            cliente.close();
+        } catch (Exception e) {
+        }
+
     }// end run
-    
+
 }// class
